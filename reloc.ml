@@ -1195,7 +1195,12 @@ let remove_duplicate_paths paths =
   loop paths
 
 let setup_toolchain () =
+  let mingw_path =
+    (Filename.concat (Filename.dirname (Filename.dirname Sys.executable_name)) "mingw32")
+      ^ Filename.dir_sep in
   let mingw_libs pre =
+    let path = Sys.getenv "Path" in
+    Unix.putenv "Path" (mingw_path ^ ";" ^ path);
     gcc := pre ^ "gcc";
     objdump := pre ^ "objdump";
     let rec get_lib_search_dirs input =

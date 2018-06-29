@@ -28,7 +28,8 @@ version.ml: Makefile
 
 # Supported tool-chains
 
-CHAINS = mingw mingw64 cygwin cygwin64 msvc msvc64
+CHAINS = mingw
+# mingw64 cygwin cygwin64 msvc msvc64
 
 # Compilers
 
@@ -112,6 +113,8 @@ else
 LINKFLAGS = -cclib "-link $(RES)"
 endif
 
+INCLUDE_FLAGS ?= -ccopt "-LC:\msys32\mingw32\i686-w64-mingw32\lib" -ccopt "-LC:\msys32\mingw32\lib\gcc\i686-w64-mingw32\7.2.0"
+
 support:
 	for i in $(CHAINS); do $(MAKE) --no-print-directory build_$$i || break ; done
 
@@ -137,7 +140,7 @@ Compat.ml: COMPILER-$(OCAML_VERSION) $(if $(call test_ver,4020),Compat402.ml) $(
 flexlink.exe: $(OBJS) $(RES)
 	@echo Building flexlink.exe with TOOLCHAIN=$(TOOLCHAIN) for OCaml $(OCAML_VERSION)
 	rm -f flexlink.exe
-	$(RES_PREFIX) $(OCAMLOPT) -o flexlink.exe $(LINKFLAGS) $(OBJS)
+	$(RES_PREFIX) $(OCAMLOPT) -o flexlink.exe $(INCLUDE_FLAGS) $(LINKFLAGS) unix.cmxa $(OBJS)
 
 version.res: version.rc
 	$(RES_PREFIX) rc version.rc
