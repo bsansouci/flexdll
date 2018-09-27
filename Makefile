@@ -1,9 +1,9 @@
 VERSION = 0.37
 all: flexlink.exe support
 
-OCAML_CONFIG_FILE=$(shell cygpath -ad "$(shell ocamlopt -where)/Makefile.config")
+OCAML_CONFIG_FILE=$(shell cygpath -ad "$(shell ocamlopt.opt -where)/Makefile.config")
 include $(OCAML_CONFIG_FILE)
-OCAMLOPT=ocamlopt
+OCAMLOPT=ocamlopt.opt
 OCAML_VERSION:=$(shell $(OCAMLOPT) -version|sed -e "s/+.*//" -e "s/\.//g")
 ifeq ($(OCAML_VERSION),)
 OCAML_VERSION:=0
@@ -87,7 +87,7 @@ else
 	@echo "$(MSVC_LIB)"
 endif
 
-OCAMLOPT = ocamlopt -g
+OCAMLOPT = ocamlopt.opt -g
 
 #OCAMLOPT += -strict-sequence -strict-formats -safe-string -w +A-9
 
